@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 //import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./QuichesToken.sol";
+import "./Tokens/QuichesToken.sol";
 
 contract QuichswapStacking is Ownable {
     uint public totalStacked = 0;

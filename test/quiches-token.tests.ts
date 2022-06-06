@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { Contract } from "ethers";
+import { getFactories } from "../utils/factories";
 
 const fromWei = ethers.utils.formatEther;
 const toWei = ethers.utils.parseEther;
@@ -13,8 +14,8 @@ describe("Contract: QuichesToken", function () {
   beforeEach(async () => {
     signers = await ethers.getSigners();
 
-    const TokenContract = await ethers.getContractFactory("QuichesToken");
-    contract = await TokenContract.deploy();
+    const { QuichesTokenFactory } = await getFactories();
+    contract = await QuichesTokenFactory.deploy();
   });
 
   it("Test the mint token without adding the account from the admin list", async () => {
@@ -23,7 +24,7 @@ describe("Contract: QuichesToken", function () {
 
     await expect(
       contract.connect(account1).mint(account1.address, toWei("10"))
-    ).to.revertedWith("Cannot mint");
+    ).to.revertedWith("Adminable: caller is not admin");
   });
 
   it("Test the token mint by adding the account from the admin list", async () => {
@@ -47,7 +48,7 @@ describe("Contract: QuichesToken", function () {
 
     await expect(
       contract.connect(account1).mint(account1.address, toWei("10"))
-    ).to.revertedWith("Cannot mint");
+    ).to.revertedWith("Adminable: caller is not admin");
   });
 
   it("Test the token mint by adding the account from the admin list", async () => {

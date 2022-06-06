@@ -4,7 +4,7 @@
     "test": "npx hardhat test",
     "compile": "npx hardhat compile",
     "check": "npx hardhat check",
-    "remix": "npx remixd -s ./contracts -u",
+    "remix": "npx remixd -s ./contracts/* -u",
     "deploy:testnet": "npx hardhat run --network mumbai scripts/deploy.testnet.ts"
   },
   "devDependencies": {

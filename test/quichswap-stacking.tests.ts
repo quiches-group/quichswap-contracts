@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { ethers, network } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { Contract } from "ethers";
+import { getFactories } from "../utils/factories";
 
 const fromWei = ethers.utils.formatEther;
 const toWei = ethers.utils.parseEther;
@@ -17,22 +18,22 @@ describe("Contract: QuichswapStacking", function () {
   beforeEach(async () => {
     signers = await ethers.getSigners();
 
-    const TokenContract = await ethers.getContractFactory("QuichesToken");
-    const token = await TokenContract.deploy();
-    const SampleTokenContract = await ethers.getContractFactory("SampleToken");
-    const sampleToken = await SampleTokenContract.deploy();
+    const {
+      QuichesTokenFactory,
+      SampleTokenFactory,
+      QuichswapStackingFactory,
+    } = await getFactories();
 
-    const StackingContract = await ethers.getContractFactory(
-      "QuichswapStacking"
-    );
-    const stacking = await StackingContract.deploy(
+    const token = await QuichesTokenFactory.deploy();
+    const sampleToken = await SampleTokenFactory.deploy();
+    const stacking = await QuichswapStackingFactory.deploy(
       token.address,
       sampleToken.address
     );
 
     await token.addAdmin(stacking.address);
-    await sampleToken.connect(signers[1]).mint(toWei("5000"));
-    await sampleToken.connect(signers[2]).mint(toWei("5000"));
+    await sampleToken.mint(signers[1].address, toWei("5000"));
+    await sampleToken.mint(signers[2].address, toWei("5000"));
 
     contracts = {
       tokenContract: token,
