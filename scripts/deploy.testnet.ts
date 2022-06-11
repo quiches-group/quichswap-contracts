@@ -30,45 +30,53 @@ async function main() {
   const SampleTokenContract = await SampleTokenFactory.deploy();
   await SampleTokenContract.deployed();
 
-  /**  Stack ST/QCH  */
-  const ST_QCH_StackingContract = await QuichswapStackingFactory.deploy(
+  /**  Stack QCH/QCH  */
+  const QCH_StackingContract = await QuichswapStackingFactory.deploy(
     QCHTokenContract.address,
     SampleTokenContract.address
   );
-  await ST_QCH_StackingContract.deployed();
-  await QCHTokenContract.addAdmin(ST_QCH_StackingContract.address);
+  await QCH_StackingContract.deployed();
+  await QCHTokenContract.addAdmin(QCH_StackingContract.address);
+
+  /**  Stack ST/QCH  */
+  const ST_StackingContract = await QuichswapStackingFactory.deploy(
+    QCHTokenContract.address,
+    SampleTokenContract.address
+  );
+  await ST_StackingContract.deployed();
+  await QCHTokenContract.addAdmin(ST_StackingContract.address);
 
   /**  LP ST/QCH  */
-  const STQCHTokenContract = await LPTokenFactory.deploy("STQCHLP");
-  await STQCHTokenContract.deployed();
-  const STCHTLPContract = await QuichswapLiquidityProvidingFactory.deploy(
-    SampleTokenContract.address,
-    QCHTokenContract.address,
-    STQCHTokenContract.address
+  const STQCH_LPTokenContract = await LPTokenFactory.deploy("STQCHLP");
+  await STQCH_LPTokenContract.deployed();
+  const STQCH_LiquidityProvidingContract =
+    await QuichswapLiquidityProvidingFactory.deploy(
+      SampleTokenContract.address,
+      QCHTokenContract.address,
+      STQCH_LPTokenContract.address
+    );
+  await STQCH_LiquidityProvidingContract.deployed();
+  await STQCH_LPTokenContract.addAdmin(
+    STQCH_LiquidityProvidingContract.address
   );
-  await STCHTLPContract.deployed();
-  await STQCHTokenContract.addAdmin(STCHTLPContract.address);
 
   /**  Stack STQCHLP/QCH  */
-  const STQCHLP_QCH_StackingContract = await QuichswapStackingFactory.deploy(
+  const STQCHLP_StackingContract = await QuichswapStackingFactory.deploy(
     QCHTokenContract.address,
-    STQCHTokenContract.address
+    STQCH_LPTokenContract.address
   );
-  await STQCHLP_QCH_StackingContract.deployed();
-  await QCHTokenContract.addAdmin(ST_QCH_StackingContract.address);
+  await STQCHLP_StackingContract.deployed();
+  await QCHTokenContract.addAdmin(ST_StackingContract.address);
 
-  console.log("QCHTokenContract address: ", QCHTokenContract.address);
-  console.log("SampleTokenContract address:", SampleTokenContract.address);
-  console.log(
-    "ST_QCH_StackingContract address:",
-    ST_QCH_StackingContract.address
-  );
-  console.log("STQCHTokenContract address: ", STQCHTokenContract.address);
-  console.log("STCHTLPContract address: ", STCHTLPContract.address);
-  console.log(
-    "STQCHLP_QCH_StackingContract address: ",
-    STQCHLP_QCH_StackingContract.address
-  );
+  console.log({
+    SampleTokenContract: SampleTokenContract.address,
+    QCHTokenContract: QCHTokenContract.address,
+    STQCH_LPTokenContract: STQCH_LPTokenContract.address,
+    ST_StackingContract: ST_StackingContract.address,
+    QCH_StackingContract: QCH_StackingContract.address,
+    STQCH_LiquidityProvidingContract: STQCH_LiquidityProvidingContract.address,
+    STQCHLP_StackingContract: STQCHLP_StackingContract.address,
+  });
 }
 
 // We recommend this pattern to be able to use async/await everywhere
