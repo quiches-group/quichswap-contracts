@@ -79,17 +79,23 @@ contract QuichswapLiquidityProviding is Ownable {
         amountToken2 = _ratio * _token2InPool / 1 ether;
     }
 
-//    function swapToken1(uint _amountToken1) external {
-//        require(_amountToken1 > 0);
-//
-//        token1.transferFrom(msg.sender, address(this), _amountToken1);
-//        token2.transfer(msg.sender, _amountToken1);
-//    }
-//
-//    function swapToken2(uint _amountToken2) external {
-//        require(_amountToken2 > 0);
-//
-//        token1.transferFrom(msg.sender, address(this), _amountToken2);
-//        token2.transfer(msg.sender, _amountToken2);
-//    }
+    function swapToken1(uint _amountToken1) external {
+        require(_amountToken1 > 0);
+
+        uint _amountToken2 = getAmountOfToken2(_amountToken1);
+        require(token2.balanceOf(address(this)) >= _amountToken2);
+
+        token1.transferFrom(msg.sender, address(this), _amountToken1);
+        token2.transfer(msg.sender, _amountToken2);
+    }
+
+    function swapToken2(uint _amountToken2) external {
+        require(_amountToken2 > 0);
+
+        uint _amountToken1 = getAmountOfToken1(_amountToken2);
+        require(token1.balanceOf(address(this)) >= _amountToken1);
+
+        token2.transferFrom(msg.sender, address(this), _amountToken2);
+        token1.transfer(msg.sender, _amountToken1);
+    }
 }
