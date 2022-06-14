@@ -33,7 +33,7 @@ async function main() {
   /**  Stack QCH/QCH  */
   const QCH_StackingContract = await QuichswapStackingFactory.deploy(
     QCHTokenContract.address,
-    SampleTokenContract.address
+    QCHTokenContract.address
   );
   await QCH_StackingContract.deployed();
   await QCHTokenContract.addAdmin(QCH_StackingContract.address);
