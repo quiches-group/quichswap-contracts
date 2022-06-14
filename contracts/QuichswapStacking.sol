@@ -16,7 +16,7 @@ contract QuichswapStacking is Ownable {
 
     mapping(address => StackedToken) public stackedTokens;
 
-    uint public rewardsPerHour = 15;
+    uint public rewardsPerHour = 0.0005 ether;
 
     QuichesToken private token;
     ERC20 private stackableToken;
@@ -89,7 +89,7 @@ contract QuichswapStacking is Ownable {
         // solhint-disable-next-line not-rely-on-time
         uint currentTimestamp = block.timestamp;
 
-        return (currentTimestamp - stacked.stackingStartTime) * amountOfTokenToClaim * rewardsPerHour / 3600;
+        return (currentTimestamp - stacked.stackingStartTime) * amountOfTokenToClaim * rewardsPerHour / 1 ether / 3600;
     }
 
     function getTotalRewardAmount(address owner) external view returns(uint) {

@@ -146,7 +146,7 @@ describe("Contract: QuichswapStacking", function () {
     );
 
     const rewardTokenBalance = await tokenContract.balanceOf(account1.address);
-    const expectedRewardAmount = 28500;
+    const expectedRewardAmount = 0.95;
 
     const tokensStackedByAccount =
       await stackingContract.getTotalStackedByOwner(account1.address);
@@ -155,8 +155,8 @@ describe("Contract: QuichswapStacking", function () {
     expect(fromWei(contractBalance)).to.equal("2100.0");
     expect(fromWei(tokensStackedByAccount)).to.equal("2100.0");
     expect(Number(fromWei(rewardTokenBalance))).to.be.at.within(
-      expectedRewardAmount - 15,
-      expectedRewardAmount + 15
+      expectedRewardAmount - expectedRewardAmount * 0.03,
+      expectedRewardAmount + expectedRewardAmount * 0.03
     );
   });
 
@@ -229,11 +229,11 @@ describe("Contract: QuichswapStacking", function () {
     const rewardAmount = await stackingContract.getTotalRewardAmount(
       account1.address
     );
-    const expectedRewardAmount = 7680;
+    const expectedRewardAmount = 0.256;
 
     expect(Number(fromWei(rewardAmount))).to.be.within(
-      expectedRewardAmount - 10,
-      expectedRewardAmount + 10
+      expectedRewardAmount - expectedRewardAmount * 0.03,
+      expectedRewardAmount + expectedRewardAmount * 0.03
     );
   });
 
@@ -255,7 +255,9 @@ describe("Contract: QuichswapStacking", function () {
     await stackingContract.connect(account1).claim();
 
     const rewardsPerHour = await stackingContract.rewardsPerHour();
-    const expectedRewardAmount = String((150 + 574) * 2 * rewardsPerHour);
+    const expectedRewardAmount = String(
+      (150 + 574) * 2 * Number(fromWei(rewardsPerHour))
+    );
 
     const rewardBalance = await tokenContract.balanceOf(account1.address);
 
@@ -264,8 +266,8 @@ describe("Contract: QuichswapStacking", function () {
     );
 
     expect(Number(fromWei(rewardBalance))).to.be.within(
-      Number(expectedRewardAmount) - 10,
-      Number(expectedRewardAmount) + 10
+      Number(expectedRewardAmount) - Number(expectedRewardAmount) * 0.03,
+      Number(expectedRewardAmount) + Number(expectedRewardAmount) * 0.03
     );
 
     expect(fromWei(availableRewardAmount)).to.equal("0.0");
