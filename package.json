@@ -5,7 +5,7 @@
     "compile": "npx hardhat compile",
     "check": "npx hardhat check",
     "remix": "npx remixd -s ./contracts/* -u",
-    "deploy:testnet": "npx hardhat run --network mumbai scripts/deploy.testnet.ts"
+    "deploy:testnet": "npx hardhat run --network ropsten scripts/deploy.testnet.ts"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",
