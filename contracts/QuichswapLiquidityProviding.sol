@@ -22,12 +22,12 @@ contract QuichswapLiquidityProviding is Ownable {
     }
 
     function addLiquidity(uint _amountToken1, uint _amountToken2) external {
-        uint expectedAmountOfToken2 = getAmountOfToken2(_amountToken1);
-        uint minOfRAnge = expectedAmountOfToken2 / 1 ether * 1 ether;
-        uint maxOfRange = minOfRAnge + 1 ether;
-
-        require(_amountToken2 <= maxOfRange, "Wrong ratio");
-        require(_amountToken2 >= minOfRAnge, "Wrong ratio");
+//        uint expectedAmountOfToken2 = getAmountOfToken2(_amountToken1);
+//        uint minOfRAnge = expectedAmountOfToken2 / 1 ether * 1 ether;
+//        uint maxOfRange = minOfRAnge + 1 ether;
+//
+//        require(_amountToken2 <= maxOfRange, "Wrong ratio");
+//        require(_amountToken2 >= minOfRAnge, "Wrong ratio");
         token1.transferFrom(msg.sender, address(this), _amountToken1);
         token2.transferFrom(msg.sender, address(this), _amountToken2);
 
