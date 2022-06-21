@@ -66,7 +66,7 @@ async function main() {
     STQCH_LPTokenContract.address
   );
   await STQCHLP_StackingContract.deployed();
-  await QCHTokenContract.addAdmin(ST_StackingContract.address);
+  await QCHTokenContract.addAdmin(STQCHLP_StackingContract.address);
 
   console.log({
     SampleTokenContract: SampleTokenContract.address,
